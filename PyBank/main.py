@@ -8,7 +8,10 @@ import statistics
 
 csvpath=os.path.join('Resources', 'budget_data.csv')
 
-with open(csvpath, encoding='utf') as csvfile:
+output_path = os.path.join('analysis', 'financial_analysis.txt')
+
+
+with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_file:
     csvreader = csv.reader(csvfile, delimiter=",")
     #skip head row
     header = next(csvreader)
@@ -38,7 +41,7 @@ with open(csvpath, encoding='utf') as csvfile:
 #mades a second list pnl2 to hold only int value to pass it through statistics method
     avgchange = int(statistics.mean(pnl2))
 
-  #print desired values
+  #print to terminal
     print("Financial Analysis")
     print("----------------------------")
     print(f"Total Months: {total_months}")
@@ -46,4 +49,13 @@ with open(csvpath, encoding='utf') as csvfile:
     print(f"Average Change: ${avgchange}")
     print(f"Greatest Increase in Profits: {max_value[0]} (${max_value[1]})")
     print(f"Greatest Decrease in Profits: {min_value[0]} (${min_value[1]})")
+  
+  #print output to file
+    print("Financial Analysis", file=output_file)
+    print("----------------------------", file=output_file)
+    print(f"Total Months: {total_months}", file=output_file)
+    print(f"Total: ${total_pnl}", file=output_file)
+    print(f"Average Change: ${avgchange}", file=output_file)
+    print(f"Greatest Increase in Profits: {max_value[0]} (${max_value[1]})", file=output_file)
+    print(f"Greatest Decrease in Profits: {min_value[0]} (${min_value[1]})", file=output_file)
     
