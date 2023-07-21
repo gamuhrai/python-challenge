@@ -1,4 +1,6 @@
+#This will allow us to create file path across operating systems
 import os
+#module for reading CSV files
 import csv
 
 csvpath = os.path.join('Resources', 'election_data.csv')
@@ -8,11 +10,12 @@ with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_
     csvreader = csv.reader(csvfile, delimiter=",")
     header = next(csvreader)
 
+#initialize variables to zero
     total_votes = 0
     votes_ccs = 0
     votes_dd = 0
     votes_rad = 0
-
+# loop through rows and count up votes for each candidates
     for row in csvreader:
         total_votes += 1
 
@@ -29,6 +32,8 @@ with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_
     percent_rad = (votes_rad / total_votes) * 100
 
     # Find the winner based on the maximum votes
+    #dictionary of candidate_votes stores vote count 
+    # for each candidate with the key being the candidate name
     candidate_votes = {"Charles Casper Stockham": votes_ccs, "Diana DeGette": votes_dd, "Raymon Anthony Doane": votes_rad}
     winner = max(candidate_votes, key=candidate_votes.get)
 
@@ -41,7 +46,7 @@ with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_
     print(f"Diana DeGette: {percent_dd:.3f}% ({votes_dd})")
     print(f"Raymon Anthony Doane: {percent_rad:.3f}% ({votes_rad})")
     print("----------------------------")
-    print(f"Winner: {winner}")
+    print(f"Winner: {winner}") 
     print("----------------------------")
 
     # Print output to file

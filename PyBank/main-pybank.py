@@ -3,7 +3,7 @@ import os
 
 #Module for reading CSV files
 import csv
-
+#module to use the statistics method
 import statistics
 
 csvpath=os.path.join('Resources', 'budget_data.csv')
@@ -21,6 +21,8 @@ with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_
     total_pnl = 0
     pnl = []
     pnl2 = []
+    previous_pnl = None
+    mchange = []
 #for loop to read each row of the csv file in csvreader
     for row in csvreader:
         #since unique months don't matter, 
@@ -30,16 +32,27 @@ with open(csvpath, encoding='utf') as csvfile, open(output_path, 'w') as output_
         pnl_value = int(row[1])
         #total_pnl holds integer sum total pf all profit/loss
         total_pnl += pnl_value
+
+        #calculate pnl month changes
+        if previous_pnl is not None:
+            pnl_change = pnl_value - previous_pnl 
+
+
         #adding date and pnl value to each list element 
         #each list element has indices 0 = date and 1 = pnl value
-        pnl.append((row[0], pnl_value))
-        pnl2.append(pnl_value)
+            pnl.append((row[0], pnl_change))
+            pnl2.append(pnl_change)
+            
+
+        #update previous pnl with current pnl_value for the next iteration
+        previous_pnl = pnl_value
+    
 
 #determine max and min value by looking at the second index of each list element
     max_value = max(pnl, key=lambda x: x[1])
     min_value = min(pnl, key=lambda x: x[1])
 #mades a second list pnl2 to hold only int value to pass it through statistics method
-    avgchange = int(statistics.mean(pnl2))
+    avgchange = round((statistics.mean(pnl2)),2)
 
   #print to terminal
     print("Financial Analysis")
